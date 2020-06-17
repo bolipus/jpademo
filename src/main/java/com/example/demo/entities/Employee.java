@@ -1,10 +1,13 @@
 package com.example.demo.entities;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -29,9 +32,11 @@ import javax.persistence.TemporalType;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
+@ToString(exclude = "department")
 @NoArgsConstructor
 public class Employee {
 
@@ -50,11 +55,11 @@ public class Employee {
     @Temporal(TemporalType.DATE)
     private Date startDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "DEP_ID")
     private Department department;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "PSPACE_ID")
     ParkingSpace parkingSpace;
 
@@ -62,26 +67,32 @@ public class Employee {
     private Address address;
 
     @ElementCollection
-    @JoinTable(name = "EMP_VACATION", joinColumns = @JoinColumn(name = "EMP_ID", referencedColumnName = "ID"))
-    private Collection<VacationEntry> vacationBookings;
+    @JoinTable(name = "EMP_VACATION",
+            joinColumns = @JoinColumn(name = "EMP_ID", referencedColumnName = "ID"))
+    private Collection<VacationEntry> vacationBookings = new ArrayList<>();
 
     @ElementCollection
-    @JoinTable(name = "EMP_NICKNAMES", joinColumns = @JoinColumn(name = "EMP_ID", referencedColumnName = "ID"))
-    private Set<String> nickNames;
+    @JoinTable(name = "EMP_NICKNAMES",
+            joinColumns = @JoinColumn(name = "EMP_ID", referencedColumnName = "ID"))
+    private Set<String> nickNames = new HashSet<>();
 
     @ManyToMany
-    @JoinTable(name = "EMP_PROJ", joinColumns = @JoinColumn(name = "EMP_ID", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "PROJ_ID", referencedColumnName = "id"))
-    private Collection<Project> projects;
+    @JoinTable(name = "EMP_PROJ",
+            joinColumns = @JoinColumn(name = "EMP_ID", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "PROJ_ID", referencedColumnName = "id"))
+    private Collection<Project> projects = new ArrayList<>();
 
-    @OneToMany
-    @JoinTable(name = "EMP_PHONE", joinColumns = @JoinColumn(name = "EMP_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "PHONE_ID", referencedColumnName = "ID"))
-    private Collection<Phone> phones;
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
+    @JoinTable(name = "EMP_PHONE",
+            joinColumns = @JoinColumn(name = "EMP_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "PHONE_ID", referencedColumnName = "ID"))
+    private Collection<Phone> phones = new ArrayList<>();
 
     @ElementCollection
     @CollectionTable(name = "EMP_PHONENUM")
     @MapKeyEnumerated(EnumType.STRING)
     @MapKeyColumn(name = "PHONE_TYPE")
     @Column(name = "PHONE_NUM")
-    private Map<PhoneType, String> phoneNumbers;
+    private Map<PhoneType, String> phoneNumbers = new HashMap<>();
 
 }

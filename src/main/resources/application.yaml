@@ -15,4 +15,7 @@ spring:
     url: jdbc:h2:~/demoapp
     username: sa
     password:
+logging:
+  level:
+    root: error
 
