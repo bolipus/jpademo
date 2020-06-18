@@ -2,15 +2,18 @@ package com.example.demo.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Optional;
+
 import com.example.demo.repositories.DepartmentRepository;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import lombok.extern.log4j.Log4j;
+
 import lombok.extern.log4j.Log4j2;
 
 @ExtendWith(SpringExtension.class)
@@ -22,12 +25,10 @@ public class DepartmentTests {
   private DepartmentRepository departmentRepository;
 
   @Autowired
-  public DepartmentTests(TestEntityManager entityManager,
-      DepartmentRepository departmentRepository) {
+  public DepartmentTests(TestEntityManager entityManager, DepartmentRepository departmentRepository) {
     this.entityManager = entityManager;
     this.departmentRepository = departmentRepository;
   }
-
 
   @Test
 
@@ -56,7 +57,5 @@ public class DepartmentTests {
         "Number of employees are not equal");
 
   }
-
-
 
 }

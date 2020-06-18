@@ -4,16 +4,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Optional;
+
 import com.example.demo.repositories.EmployeeRepository;
-import com.example.demo.repositories.ParkingSpaceRepository;
-import com.example.demo.repositories.PhoneRepository;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import lombok.extern.log4j.Log4j2;
 
 @ExtendWith(SpringExtension.class)
@@ -23,7 +25,6 @@ public class EmployeeTests {
 
   private TestEntityManager entityManager;
   private EmployeeRepository employeeRepository;
-
 
   @Autowired
   public EmployeeTests(TestEntityManager entityManager, EmployeeRepository employeeRepository) {
@@ -45,8 +46,6 @@ public class EmployeeTests {
 
     assertEquals(emp.getId(), optionalEmployee.get().getId(), "Ids are not equal");
   }
-
-
 
   @Test
   public void save() {
@@ -90,8 +89,6 @@ public class EmployeeTests {
 
     emp = entityManager.persist(emp);
 
-
-
     employeeRepository.deleteById(emp.getId());
 
     Employee found = entityManager.find(Employee.class, emp.getId());
@@ -119,11 +116,9 @@ public class EmployeeTests {
 
     emp = entityManager.persist(emp);
 
-
     employeeRepository.deleteById(emp.getId());
 
     Employee found = entityManager.find(Employee.class, emp.getId());
-
 
     assertNull(found, "Employee still exits.");
 
@@ -160,6 +155,5 @@ public class EmployeeTests {
     // FIXME
     log.info(manegedEmp);
   }
-
 
 }
